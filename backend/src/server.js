@@ -15,6 +15,7 @@ app.use('/api/auth', require('./routes/auth'));
 app.use('/api/courses', require('./routes/courses'));
 app.use('/api/activities', require('./routes/activities'));
 app.use('/api/ai', require('./routes/ai'));
+app.use('/api/leaderboard', require('./routes/leaderboard'));
 
 app.get('/api/health', (req, res) => {
   res.json({ status: 'OK', message: 'Backend is running', timestamp: new Date().toISOString() });
