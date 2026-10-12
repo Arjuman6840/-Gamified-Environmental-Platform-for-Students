@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EcoLearn — Gamified Environmental Learning</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ===================== NAVBAR ===================== -->
+  <nav class="navbar">
+    <div class="nav-brand">
+      <span class="leaf">🌱</span>
+      <span class="brand-name">EcoLearn</span>
+    </div>
+    <div class="nav-links">
+      <a href="#home" onclick="showPage('home')">Home</a>
+      <a href="#courses" onclick="showPage('courses')">Courses</a>
+      <a href="#activities" onclick="showPage('activities')">Activities</a>
+      <a href="#quiz" onclick="showPage('quiz')">Quiz</a>
+      <a href="#leaderboard" onclick="showPage('leaderboard')">Leaderboard</a>
+      <a href="#tutor" onclick="showPage('tutor')">AI Tutor</a>
+    </div>
+    <div class="nav-auth">
+      <span id="userBadge" class="user-badge hidden"></span>
+      <button id="loginBtn" class="btn-outline" onclick="showPage('login')">Login</button>
+      <button id="registerBtn" class="btn-solid" onclick="showPage('register')">Register</button>
+      <button id="logoutBtn" class="btn-outline hidden" onclick="logout()">Logout</button>
+    </div>
+  </nav>
+
+  <main class="container">
+
+    <!-- ===================== HOME ===================== -->
+    <section id="page-home" class="page active">
+      <div class="hero">
+        <h1>Learn, Act, and Save the Planet 🌍</h1>
+        <p>An interactive platform for students to learn environmental science, take real-world action, and earn eco-points.</p>
+        <div class="hero-buttons">
+          <button class="btn-solid big" onclick="showPage('register')">Join as Student</button>
+          <button class="btn-outline big" onclick="showPage('register')">Join as Teacher</button>
+        </div>
+      </div>
+
+      <h2 class="section-title">Platform Features</h2>
+      <div class="grid-4">
+        <div class="card feature-card">
+          <div class="feature-icon">📚</div>
+          <h3>Interactive Courses</h3>
+          <p>Structured lessons on climate change, sustainability, and biodiversity.</p>
+        </div>
+        <div class="card feature-card">
+          <div class="feature-icon">🌿</div>
+          <h3>Actionable Activities</h3>
+          <p>Complete real-world tasks, submit proof, and earn points.</p>
+        </div>
+        <div class="card feature-card">
+          <div class="feature-icon">👩‍🏫</div>
+          <h3>Teacher Evaluation</h3>
+          <p>Teachers review submissions and award custom points.</p>
+        </div>
+        <div class="card feature-card">
+          <div class="feature-icon">🏆</div>
+          <h3>Eco Leaderboard</h3>
+          <p>Compete with peers, earn badges, and climb the rankings.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== REGISTER ===================== -->
+    <section id="page-register" class="page">
+      <div class="auth-card">
+        <h2>Create an Account</h2>
+        <div class="role-tabs">
+          <button class="role-tab active" onclick="selectRole('student')" id="tab-student">Student</button>
+          <button class="role-tab" onclick="selectRole('teacher')" id="tab-teacher">Teacher</button>
+        </div>
+        <form id="registerForm" onsubmit="handleRegister(event)">
+          <label>Full Name</label>
+          <input type="text" id="regName" placeholder="Jane Doe" required />
+
+          <label>Email Address</label>
+          <input type="email" id="regEmail" placeholder="name@example.com" required />
+
+          <label>School / Organization</label>
+          <input type="text" id="regSchool" placeholder="Greenwood High School" />
+
+          <label>Password</label>
+          <input type="password" id="regPassword" placeholder="At least 6 characters" required minlength="6" />
+
+          <button type="submit" class="btn-solid full">Create Account</button>
+        </form>
+        <p class="center-text">Already have an account? <a onclick="showPage('login')">Login here</a></p>
+      </div>
+    </section>
+
+    <!-- ===================== LOGIN ===================== -->
+    <section id="page-login" class="page">
+      <div class="auth-card">
+        <h2>Welcome Back</h2>
+        <div class="role-tabs">
+          <button class="role-tab active" onclick="selectLoginRole('student')" id="login-tab-student">Student</button>
+          <button class="role-tab" onclick="selectLoginRole('teacher')" id="login-tab-teacher">Teacher</button>
+        </div>
+        <form id="loginForm" onsubmit="handleLogin(event)">
+          <label>Email Address</label>
+          <input type="email" id="loginEmail" placeholder="name@example.com" required />
+
+          <label>Password</label>
+          <input type="password" id="loginPassword" placeholder="••••••••" required />
+
+          <button type="submit" class="btn-solid full">Login</button>
+        </form>
+        <p class="center-text">Don't have an account? <a onclick="showPage('register')">Register here</a></p>
+      </div>
+    </section>
+
+    <!-- ===================== COURSES ===================== -->
+    <section id="page-courses" class="page">
+      <h2 class="section-title">Environmental Science Courses 🌍</h2>
+      <p class="subtitle">Explore sustainability, climate action, and recycling.</p>
+      <div id="coursesList" class="grid-3"></div>
+    </section>
+
+    <!-- ===================== ACTIVITIES ===================== -->
+    <section id="page-activities" class="page">
+      <h2 class="section-title">Explore Eco Activities 🌿</h2>
+      <p class="subtitle">Learn about the environment through everyday actions.</p>
+
+      <div class="stats-row">
+        <div class="stat-card"><div class="stat-number" id="statActivities">0</div><div class="stat-label">Activities</div></div>
+        <div class="stat-card"><div class="stat-number" id="statPoints">0</div><div class="stat-label">Eco-Points</div></div>
+        <div class="stat-card"><div class="stat-number" id="statRank">—</div><div class="stat-label">Your Rank</div></div>
+      </div>
+
+      <div class="card">
+        <h3>Submit Activity Proof</h3>
+        <form id="activityForm" onsubmit="handleActivitySubmit(event)">
+          <label>Activity Title</label>
+          <input type="text" id="actTitle" placeholder="Planted a tree" required />
+
+          <label>Description</label>
+          <textarea id="actDesc" placeholder="Describe what you did..."></textarea>
+
+          <label>Course (optional)</label>
+          <select id="actCourse">
+            <option value="">— Select a course —</option>
+          </select>
+
+          <label>Proof (image or PDF)</label>
+          <input type="file" id="actProof" accept="image/*,application/pdf" required />
+
+          <button type="submit" class="btn-solid full">Submit for Review</button>
+        </form>
+      </div>
+
+      <div class="card">
+        <h3>My Submissions</h3>
+        <div id="myActivities"><p class="muted">Loading...</p></div>
+      </div>
+    </section>
+
+    <!-- ===================== QUIZ ===================== -->
+    <section id="page-quiz" class="page">
+      <h2 class="section-title">Environmental Knowledge Quiz ✏️</h2>
+      <p class="subtitle">AI-generated quizzes — pick a topic and test your knowledge.</p>
+
+      <div class="card">
+        <div class="row">
+          <div>
+            <label>Topic</label>
+            <input type="text" id="quizTopic" placeholder="e.g. recycling, climate change" value="recycling" />
+          </div>
+          <div>
+            <label>Difficulty</label>
+            <select id="quizDifficulty">
+              <option value="easy">Easy</option>
+              <option value="medium">Medium</option>
+              <option value="hard">Hard</option>
+            </select>
+          </div>
+        </div>
+        <button class="btn-solid full" onclick="generateQuiz()">Generate Quiz</button>
+      </div>
+
+      <div id="quizContainer"></div>
+    </section>
+
+    <!-- ===================== LEADERBOARD ===================== -->
+    <section id="page-leaderboard" class="page">
+      <h2 class="section-title">🏆 Eco Champions Leaderboard</h2>
+      <p class="subtitle">Celebrate your progress and inspire others.</p>
+      <div id="leaderboardContent"><p class="muted">Loading...</p></div>
+    </section>
+
+    <!-- ===================== AI TUTOR ===================== -->
+    <section id="page-tutor" class="page">
+      <h2 class="section-title">🌍 AI Environmental Tutor</h2>
+      <p class="subtitle">Ask anything about the environment and get clear answers.</p>
+
+      <div class="card chat-card">
+        <div id="chatMessages" class="chat-messages">
+          <div class="chat-bubble bot">Hi! Ask me anything about the environment 🌱</div>
+        </div>
+        <div class="chat-input-row">
+          <input type="text" id="chatInput" placeholder="What causes global warming?" onkeydown="if(event.key==='Enter')sendTutorMessage()" />
+          <button class="btn-solid" onclick="sendTutorMessage()">Send</button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <div id="toast" class="toast"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
