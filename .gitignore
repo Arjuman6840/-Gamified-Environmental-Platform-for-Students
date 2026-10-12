@@ -5,6 +5,8 @@ backend/uploads/
 backend/test-proof.png
 backend/review.json
 database/*.db
+database/*.db-shm
+database/*.db-wal
 *.log
 .DS_Store
 .vscode/
