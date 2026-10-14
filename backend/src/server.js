@@ -1,4 +1,3 @@
-```javascript
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
@@ -12,32 +11,21 @@ app.use(express.json());
 
 app.use('/uploads', express.static(path.join(__dirname, '..', 'uploads')));
 
-// Existing routes
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/courses', require('./routes/courses'));
 app.use('/api/activities', require('./routes/activities'));
 app.use('/api/ai', require('./routes/ai'));
 app.use('/api/leaderboard', require('./routes/leaderboard'));
 
-// NEW: Teacher routes
-app.use('/api/teacher', require('./routes/teacher'));
-
 app.get('/api/health', (req, res) => {
-  res.json({
-    status: 'OK',
-    message: 'Backend is running',
-    timestamp: new Date().toISOString()
-  });
+  res.json({ status: 'OK', message: 'Backend is running', timestamp: new Date().toISOString() });
 });
 
 app.use((err, req, res, next) => {
   console.error('Global error:', err.message);
-  res.status(err.status || 500).json({
-    error: err.message || 'Server error'
-  });
+  res.status(err.status || 500).json({ error: err.message || 'Server error' });
 });
 
 app.listen(PORT, () => {
   console.log(`✅ Server running on http://localhost:${PORT}`);
 });
-```
